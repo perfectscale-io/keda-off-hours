@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleepy-workload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sleepy-workload
+  template:
+    metadata:
+      labels:
+        app: sleepy-workload
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            - sleep
+            - "3600"

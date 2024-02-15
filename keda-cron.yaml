@@ -1,0 +1,25 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: sleepy-workload-scaler
+spec:
+  scaleTargetRef:
+    # Mandatory. Must be in the same namespace as the ScaledObject
+    name: sleepy-workload
+  # Polling interval of when to check scaling events
+  pollingInterval: 10
+  # Makes the workload immediately sleep when told, instead of reading a bed-time story before for X seconds
+  cooldownPeriod: 0
+  # The workload is ASLEEP by DEFAULT, otherwise, it's Awake.
+  minReplicaCount: 0 
+  triggers:
+    - type: cron
+      metadata:
+        # The acceptable values would be a value from the IANA Time Zone Database.
+        timezone: America/New_York  
+        # At 09:00 on every day-of-week from Monday through Friday
+        start: 0 9 * * 1-5
+        # At 17:00 on every day-of-week from Monday through Friday 
+        end: 0 17 * * 1-5
+        # ie. Your MINIMUM replica count for this workload
+        desiredReplicas: "2"

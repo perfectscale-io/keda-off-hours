@@ -1,0 +1,16 @@
+kind: HTTPScaledObject
+apiVersion: http.keda.sh/v1alpha1
+metadata:
+  name: sleepy-workload
+spec:
+  hosts:
+    - myhost.com
+  scaleTargetRef:
+    name: sleepy-workload
+    kind: Deployment
+    apiVersion: apps/v1
+    service: sleepy-workload-service
+    port: 80
+  replicas:
+    min: 0
+    max: 1
